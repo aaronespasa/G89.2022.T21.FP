@@ -1,5 +1,5 @@
 # G89.2022.T21.FP
-Guided Project 3 of the Software Development Subject (UC3M) 🦮
+Final Project of the Software Development Subject (UC3M) 🦮
 
 ## Getting Started 🛠
 ➡ This project must be created clone under the following folder (we will go to that directory first):
