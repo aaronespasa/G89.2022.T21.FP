@@ -1,4 +1,5 @@
 """Tests for get_vaccine_date method"""
+from datetime import datetime
 from unittest import TestCase
 import os
 import shutil
@@ -8,6 +9,8 @@ from uc3m_care import VaccineManagementException
 from uc3m_care import JSON_FILES_PATH, JSON_FILES_RF2_PATH
 from uc3m_care import AppointmentsJsonStore
 from uc3m_care import PatientsJsonStore
+
+DATE = "2022-03-08"
 
 param_list_nok = [("test_dup_all.json", "JSON Decode Error - Wrong JSON Format"),
                   ("test_dup_char_plus.json", "phone number is not valid"),
@@ -45,7 +48,7 @@ param_list_nok = [("test_dup_all.json", "JSON Decode Error - Wrong JSON Format")
 class TestGetVaccineDate(TestCase):
     """Class for testing get_vaccine_date"""
 
-    @freeze_time("2022-03-08")
+    @freeze_time(DATE)
     def test_get_vaccine_date_ok(self):
         """test ok"""
         file_test = JSON_FILES_RF2_PATH + "test_ok.json"
@@ -62,12 +65,12 @@ class TestGetVaccineDate(TestCase):
                                           "minombre tienelalongitudmaxima",
                                           "Regular", "+34123456789", "6")
         # check the method
-        value = my_manager.get_vaccine_date(file_test)
+        value = my_manager.get_vaccine_date(file_test, DATE)
         self.assertEqual(value, "5a06c7bede3d584e934e2f5bd3861e625cb31937f9f1a5362a51fbbf38486f1c")
         # check store_date
         self.assertIsNotNone(file_store_date.find_item(value))
 
-    @freeze_time("2022-03-08")
+    @freeze_time(DATE)
     def test_get_vaccine_date_no_ok_parameter(self):
         """tests no ok"""
         my_manager = VaccineManager()
@@ -87,7 +90,7 @@ class TestGetVaccineDate(TestCase):
 
                 # check the method
                 with self.assertRaises(VaccineManagementException) as c_m:
-                    my_manager.get_vaccine_date(file_test)
+                    date = my_manager.get_vaccine_date(file_test, DATE)
                 self.assertEqual(c_m.exception.message, expected_value)
 
                 # read the file again to compare
@@ -95,7 +98,7 @@ class TestGetVaccineDate(TestCase):
 
                 self.assertEqual(hash_new, hash_original)
 
-    @freeze_time("2022-03-08")
+    @freeze_time(DATE)
     def test_get_vaccine_date_no_ok(self):
         """# long 32 in patient system id , not valid"""
         file_test = JSON_FILES_RF2_PATH + "test_no_ok.json"
@@ -107,7 +110,7 @@ class TestGetVaccineDate(TestCase):
 
         # check the method
         with self.assertRaises(VaccineManagementException) as c_m:
-            my_manager.get_vaccine_date(file_test)
+            my_manager.get_vaccine_date(file_test, DATE)
         self.assertEqual(c_m.exception.message, "patient system id is not valid")
 
         # read the file again to campare
@@ -115,7 +118,7 @@ class TestGetVaccineDate(TestCase):
 
         self.assertEqual(hash_new, hash_original)
 
-    @freeze_time("2022-03-08")
+    @freeze_time(DATE)
     def test_get_vaccine_date_no_ok_no_quotes(self):
         """ no quotes , not valid """
         file_test = JSON_FILES_RF2_PATH + "test_nok_no_comillas.json"
@@ -127,7 +130,7 @@ class TestGetVaccineDate(TestCase):
 
         # check the method
         with self.assertRaises(VaccineManagementException) as c_m:
-            my_manager.get_vaccine_date(file_test)
+            my_manager.get_vaccine_date(file_test, DATE)
         self.assertEqual(c_m.exception.message, "JSON Decode Error - Wrong JSON Format")
 
         # read the file again to campare
@@ -135,7 +138,7 @@ class TestGetVaccineDate(TestCase):
 
         self.assertEqual(hash_new, hash_original)
 
-    @freeze_time("2022-03-08")
+    @freeze_time(DATE)
     def test_get_vaccine_date_no_ok_data_manipulated(self):
         """ no quotes , not valid """
         file_test = JSON_FILES_RF2_PATH + "test_ok.json"
@@ -164,7 +167,7 @@ class TestGetVaccineDate(TestCase):
 
         exception_message = "Exception not raised"
         try:
-            my_manager.get_vaccine_date(file_test)
+            my_manager.get_vaccine_date(file_test, DATE)
         # pylint: disable=broad-except
         except Exception as exception_raised:
             exception_message = exception_raised.__str__()
@@ -181,3 +184,16 @@ class TestGetVaccineDate(TestCase):
 
         self.assertEqual(exception_message, "Patient's data have been manipulated")
         self.assertEqual(hash_new, hash_original)
+
+    @freeze_time(DATE)
+    def test_get_vaccine_date_ok_valid_date(self):
+        ...
+
+    @freeze_time(DATE)
+    def test_get_vaccine_date_no_ok_outdated_date(self):
+        ...
+
+    @freeze_time(DATE)
+    def test_get_vaccine_date_no_ok_invalid_format(self):
+        ...
+    

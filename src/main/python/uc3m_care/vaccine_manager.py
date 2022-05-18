@@ -29,7 +29,7 @@ class VaccineManager:
             my_patient.save_patient()
             return my_patient.patient_sys_id
 
-        def get_vaccine_date(self, input_file):
+        def get_vaccine_date(self, input_file, date):
             """Gets an appointment for a registered patient"""
             my_sign = VaccinationAppointment.create_appointment_from_json_file(input_file)
             # save the date in store_date.json
