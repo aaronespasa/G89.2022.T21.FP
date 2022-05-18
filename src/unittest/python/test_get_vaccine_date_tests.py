@@ -187,12 +187,32 @@ class TestGetVaccineDate(TestCase):
         self.assertEqual(hash_new, hash_original)
 
     @freeze_time(DATE)
-    def test_get_vaccine_date_ok_valid_date(self):
-        ...
-
-    @freeze_time(datetime.today() - timedelta(days=1))
     def test_get_vaccine_date_no_ok_outdated_date(self):
         """Test the get vaccine date method with an outdated date"""
+        file_test = JSON_FILES_RF2_PATH + "test_ok.json"
+        my_manager = VaccineManager()
+        file_store_date = AppointmentsJsonStore()
+
+        # read the file to compare file content before and after method call
+        hash_original = file_store_date.data_hash()
+
+        # get in string the yesterday date
+        yesterday_date = datetime.strptime(DATE, "%Y-%m-%d") - timedelta(days=1)
+        yesterday_date = str(yesterday_date).split(" ")[0]
+
+        # check the method
+        with self.assertRaises(VaccineManagementException) as c_m:
+            my_manager.get_vaccine_date(file_test, yesterday_date)
+        self.assertEqual(c_m.exception.message, "Vaccine date is outdated")
+
+        # read the file again to compare
+        hash_new = file_store_date.data_hash()
+
+        self.assertEqual(hash_new, hash_original)
+
+    @freeze_time()
+    def test_get_vaccine_date_no_ok_invalid_format(self):
+        """Test the get vaccine date method with an invalid format"""
         file_test = JSON_FILES_RF2_PATH + "test_ok.json"
         my_manager = VaccineManager()
         file_store_date = AppointmentsJsonStore()
@@ -203,14 +223,10 @@ class TestGetVaccineDate(TestCase):
         # check the method
         with self.assertRaises(VaccineManagementException) as c_m:
             my_manager.get_vaccine_date(file_test, DATE)
-        self.assertEqual(c_m.exception.message, "Vaccine date is outdated")
+        self.assertEqual(c_m.exception.message, "Vaccine date has an invalid format")
 
         # read the file again to compare
         hash_new = file_store_date.data_hash()
 
         self.assertEqual(hash_new, hash_original)
-
-    @freeze_time(DATE)
-    def test_get_vaccine_date_no_ok_invalid_format(self):
-        ...
     
