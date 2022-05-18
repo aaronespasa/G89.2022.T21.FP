@@ -3,3 +3,4 @@ venv
 .pybuilder
 target
 .DS_Store
+__pychache__
