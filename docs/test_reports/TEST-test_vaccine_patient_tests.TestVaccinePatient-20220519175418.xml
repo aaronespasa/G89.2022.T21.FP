@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="test_vaccine_patient_tests.TestVaccinePatient-20220519175418" tests="6" file="test_vaccine_patient_tests.py" time="0.042" timestamp="2022-05-19T17:54:20" failures="0" errors="5" skipped="1">
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_vaccine_patient_bad_date_signature" time="0.016" timestamp="2022-05-19T17:54:20">
+		<error type="TypeError" message="get_vaccine_date() missing 1 required positional argument: 'date'"><![CDATA[Traceback (most recent call last):
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 60, in testPartExecutor
+    yield
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 672, in run
+    self._callSetUp()
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 630, in _callSetUp
+    self.setUp()
+  File "c:\users\alejandra\pycharmprojects\g89.2022.t21.fp\venv\lib\site-packages\freezegun\api.py", line 789, in wrapper
+    result = func(*args, **kwargs)
+  File "c:\users\alejandra\pycharmprojects\g89.2022.t21.fp\src\unittest\python\test_vaccine_patient_tests.py", line 31, in setUp
+    my_manager.get_vaccine_date(file_test)
+TypeError: get_vaccine_date() missing 1 required positional argument: 'date'
+]]></error>
+	</testcase>
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_vaccine_patient_no_date" time="0.007" timestamp="2022-05-19T17:54:20">
+		<error type="TypeError" message="get_vaccine_date() missing 1 required positional argument: 'date'"><![CDATA[Traceback (most recent call last):
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 60, in testPartExecutor
+    yield
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 672, in run
+    self._callSetUp()
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 630, in _callSetUp
+    self.setUp()
+  File "c:\users\alejandra\pycharmprojects\g89.2022.t21.fp\venv\lib\site-packages\freezegun\api.py", line 789, in wrapper
+    result = func(*args, **kwargs)
+  File "c:\users\alejandra\pycharmprojects\g89.2022.t21.fp\src\unittest\python\test_vaccine_patient_tests.py", line 31, in setUp
+    my_manager.get_vaccine_date(file_test)
+TypeError: get_vaccine_date() missing 1 required positional argument: 'date'
+]]></error>
+	</testcase>
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_vaccine_patient_not_found_date_signature" time="0.006" timestamp="2022-05-19T17:54:20">
+		<error type="TypeError" message="get_vaccine_date() missing 1 required positional argument: 'date'"><![CDATA[Traceback (most recent call last):
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 60, in testPartExecutor
+    yield
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 672, in run
+    self._callSetUp()
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 630, in _callSetUp
+    self.setUp()
+  File "c:\users\alejandra\pycharmprojects\g89.2022.t21.fp\venv\lib\site-packages\freezegun\api.py", line 789, in wrapper
+    result = func(*args, **kwargs)
+  File "c:\users\alejandra\pycharmprojects\g89.2022.t21.fp\src\unittest\python\test_vaccine_patient_tests.py", line 31, in setUp
+    my_manager.get_vaccine_date(file_test)
+TypeError: get_vaccine_date() missing 1 required positional argument: 'date'
+]]></error>
+	</testcase>
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_vaccine_patient_ok" time="0.006" timestamp="2022-05-19T17:54:20">
+		<error type="TypeError" message="get_vaccine_date() missing 1 required positional argument: 'date'"><![CDATA[Traceback (most recent call last):
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 60, in testPartExecutor
+    yield
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 672, in run
+    self._callSetUp()
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 630, in _callSetUp
+    self.setUp()
+  File "c:\users\alejandra\pycharmprojects\g89.2022.t21.fp\venv\lib\site-packages\freezegun\api.py", line 789, in wrapper
+    result = func(*args, **kwargs)
+  File "c:\users\alejandra\pycharmprojects\g89.2022.t21.fp\src\unittest\python\test_vaccine_patient_tests.py", line 31, in setUp
+    my_manager.get_vaccine_date(file_test)
+TypeError: get_vaccine_date() missing 1 required positional argument: 'date'
+]]></error>
+	</testcase>
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_vaccine_patient_store_date_is_empty" time="0.006" timestamp="2022-05-19T17:54:20">
+		<error type="TypeError" message="get_vaccine_date() missing 1 required positional argument: 'date'"><![CDATA[Traceback (most recent call last):
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 60, in testPartExecutor
+    yield
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 672, in run
+    self._callSetUp()
+  File "C:\Users\ALEJANDRA\AppData\Local\Programs\Python\Python38\lib\unittest\case.py", line 630, in _callSetUp
+    self.setUp()
+  File "c:\users\alejandra\pycharmprojects\g89.2022.t21.fp\venv\lib\site-packages\freezegun\api.py", line 789, in wrapper
+    result = func(*args, **kwargs)
+  File "c:\users\alejandra\pycharmprojects\g89.2022.t21.fp\src\unittest\python\test_vaccine_patient_tests.py", line 31, in setUp
+    my_manager.get_vaccine_date(file_test)
+TypeError: get_vaccine_date() missing 1 required positional argument: 'date'
+]]></error>
+	</testcase>
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_vaccine_patient_no_store_date" time="0.001" timestamp="2022-05-19T17:54:20">
+		<skipped type="skip" message="This exception won't be raised after the refactoring process"/>
+	</testcase>
+</testsuite>

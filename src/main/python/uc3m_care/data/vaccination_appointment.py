@@ -10,13 +10,14 @@ from uc3m_care.data.vaccine_patient_register import VaccinePatientRegister
 from uc3m_care.exception.vaccine_management_exception import VaccineManagementException
 from uc3m_care.storage.appointments_json_store import AppointmentsJsonStore
 from uc3m_care.parser.appointment_json_parser import AppointmentJsonParser
+from uc3m_care.data.attribute.attribute_vaccine_date import VaccineDate
 
 
 # pylint: disable=too-many-instance-attributes
 class VaccinationAppointment:
     """Class representing an appointment  for the vaccination of a patient"""
 
-    def __init__(self, patient_sys_id, patient_phone_number, days):
+    def __init__(self, patient_sys_id, patient_phone_number, vaccine_date:str):
         self.__alg = "SHA-256"
         self.__type = "DS"
         self.__patient_sys_id = PatientSystemId(patient_sys_id).value
@@ -26,13 +27,9 @@ class VaccinationAppointment:
         self.__phone_number = PhoneNumber(patient_phone_number).value
         justnow = datetime.utcnow()
         self.__issued_at = datetime.timestamp(justnow)
-        if days == 0:
-            self.__appointment_date = 0
-        else:
-            # timestamp is represneted in seconds.microseconds
-            # age must be expressed in senconds to be added to the timestap
-            self.__appointment_date = self.__issued_at + (days * 24 * 60 * 60)
+        self.__appointment_date = VaccineDate(vaccine_date).value
         self.__date_signature = self.vaccination_signature
+
 
     def __signature_string(self):
         """Composes the string to be used for generating the key for the date"""
@@ -107,18 +104,19 @@ class VaccinationAppointment:
             datetime.fromtimestamp(appointment_record["_VaccinationAppointment__issued_at"]))
         freezer.start()
         appointment = cls(appointment_record["_VaccinationAppointment__patient_sys_id"],
-                          appointment_record["_VaccinationAppointment__phone_number"], 10)
+                          appointment_record["_VaccinationAppointment__phone_number"],
+                          appointment_record["_VaccinationAppointment__appointment_date"])
         freezer.stop()
         return appointment
 
     @classmethod
-    def create_appointment_from_json_file(cls, json_file):
+    def create_appointment_from_json_file(cls, json_file, date_appointment:str):
         """returns the vaccination appointment for the received input json file"""
         appointment_parser = AppointmentJsonParser(json_file)
         new_appointment = cls(
             appointment_parser.json_content[appointment_parser.PATIENT_SYSTEM_ID_KEY],
             appointment_parser.json_content[appointment_parser.CONTACT_PHONE_NUMBER_KEY],
-            10)
+            date_appointment)
         return new_appointment
 
     def is_valid_today(self):

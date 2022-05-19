@@ -67,7 +67,7 @@ class TestGetVaccineDate(TestCase):
                                           "Regular", "+34123456789", "6")
         # check the method
         value = my_manager.get_vaccine_date(file_test, DATE)
-        self.assertEqual(value, "5a06c7bede3d584e934e2f5bd3861e625cb31937f9f1a5362a51fbbf38486f1c")
+        self.assertEqual("ced0953d112ab693b83d1ced965fcc670b558235361b9d1bd62536769a1efa3b", value)
         # check store_date
         self.assertIsNotNone(file_store_date.find_item(value))
 
@@ -198,7 +198,7 @@ class TestGetVaccineDate(TestCase):
 
         # get in string the yesterday date
         yesterday_date = datetime.strptime(DATE, "%Y-%m-%d") - timedelta(days=1)
-        yesterday_date = str(yesterday_date).split(" ")[0]
+        yesterday_date = str(yesterday_date).split(" ", maxsplit=1)[0]
 
         # check the method
         with self.assertRaises(VaccineManagementException) as c_m:
@@ -247,7 +247,7 @@ class TestGetVaccineDate(TestCase):
         # check the method
         with self.assertRaises(VaccineManagementException) as c_m:
             my_manager.get_vaccine_date(file_test, date_one_char_more)
-        self.assertEqual(c_m.exception.message, "Vaccine date has an invalid format.")
+        self.assertEqual(c_m.exception.message, "Vaccine date has an invalid format")
 
         # read the file again to compare
         hash_new = file_store_date.data_hash()
@@ -269,7 +269,7 @@ class TestGetVaccineDate(TestCase):
         # check the method
         with self.assertRaises(VaccineManagementException) as c_m:
             my_manager.get_vaccine_date(file_test, date_invalid)
-        self.assertEqual(c_m.exception.message, "The date has an invalid format. It should be Year-Month-Day.")
+        self.assertEqual(c_m.exception.message, "Vaccine date has an invalid format")
 
         # read the file again to compare
         hash_new = file_store_date.data_hash()
@@ -401,7 +401,7 @@ class TestGetVaccineDate(TestCase):
         # check the method
         with self.assertRaises(VaccineManagementException) as c_m:
             my_manager.get_vaccine_date(file_test, date_invalid)
-        self.assertEqual(c_m.exception.message, "The date has an invalid format. It should be Year-Month-Day.")
+        self.assertEqual(c_m.exception.message, "Vaccine date has an invalid format")
 
         # read the file again to compare
         hash_new = file_store_date.data_hash()
@@ -423,7 +423,7 @@ class TestGetVaccineDate(TestCase):
         # check the method
         with self.assertRaises(VaccineManagementException) as c_m:
             my_manager.get_vaccine_date(file_test, date_invalid)
-        self.assertEqual(c_m.exception.message, "The date has an invalid format. It should be Year-Month-Day.")
+        self.assertEqual(c_m.exception.message, "Vaccine date has an invalid format")
 
         # read the file again to compare
         hash_new = file_store_date.data_hash()
@@ -445,7 +445,7 @@ class TestGetVaccineDate(TestCase):
         # check the method
         with self.assertRaises(VaccineManagementException) as c_m:
             my_manager.get_vaccine_date(file_test, date_invalid)
-        self.assertEqual(c_m.exception.message, "The date has an invalid format. It should be Year-Month-Day.")
+        self.assertEqual(c_m.exception.message, "Vaccine date has an invalid format")
 
         # read the file again to compare
         hash_new = file_store_date.data_hash()
