@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="test_get_vaccine_date_tests.TestGetVaccineDate-20220519184645" tests="17" file="test_get_vaccine_date_tests.py" time="0.219" timestamp="2022-05-19T18:46:45" failures="0" errors="0" skipped="0">
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok" time="0.014" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_data_manipulated" time="0.008" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_invalid_format_dash" time="0.004" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_invalid_format_days_0" time="0.004" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_invalid_format_days_exceed" time="0.004" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_invalid_format_month_0" time="0.005" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_invalid_format_month_exceed" time="0.004" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_invalid_format_no_days" time="0.003" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_invalid_format_no_month" time="0.003" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_invalid_format_no_year" time="0.004" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_invalid_format_one_char_less" time="0.003" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_invalid_format_one_char_more" time="0.004" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_invalid_format_year_0" time="0.003" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_no_quotes" time="0.004" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_outdated_date" time="0.005" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_no_ok_parameter" time="0.141" timestamp="2022-05-19T18:46:45"/>
+	<testcase classname="test_get_vaccine_date_tests.TestGetVaccineDate" name="test_get_vaccine_date_ok" time="0.006" timestamp="2022-05-19T18:46:45"/>
+</testsuite>

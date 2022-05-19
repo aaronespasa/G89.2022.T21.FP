@@ -105,7 +105,8 @@ class VaccinationAppointment:
         freezer.start()
         appointment = cls(appointment_record["_VaccinationAppointment__patient_sys_id"],
                           appointment_record["_VaccinationAppointment__phone_number"],
-                          appointment_record["_VaccinationAppointment__appointment_date"])
+                          datetime.fromtimestamp(appointment_record["_VaccinationAppointment__appointment_date"])
+                          .date().isoformat()[:10])
         freezer.stop()
         return appointment
 
