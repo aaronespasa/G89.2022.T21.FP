@@ -6,7 +6,7 @@ from uc3m_care import VaccineManager
 from uc3m_care import VaccineManagementException
 from datetime import datetime
 from datetime import timedelta
-from uc3m_care import JSON_FILES_RF2_PATH
+from uc3m_care import JSON_FILES_RF2_PATH, JSON_FILES_CANCELLATION_PATH
 from uc3m_care.storage.vaccination_json_store import VaccinationJsonStore
 from uc3m_care.storage.appointments_json_store import AppointmentsJsonStore
 from uc3m_care.storage.patients_json_store import PatientsJsonStore
@@ -125,3 +125,18 @@ class TestVaccinePatient(TestCase):
             my_manager.vaccine_patient(
                 "ced0953d112ab693b83d1ced965fcc670b558235361b9d1bd62536769a1efa3b")
         self.assertEqual(context_manager.exception.message, "date_signature is not found")
+
+    @freeze_time(DATE)
+    def test_not_valid_vaccine_patient_already_been_cancelled(self):
+        """The appointment is not active, it has been already cancelled."""
+        file_store_vaccine = VaccinationJsonStore()
+        file_store_vaccine.delete_json_file()
+        
+        cancellation_json = JSON_FILES_CANCELLATION_PATH + "test_right.json"
+
+        my_manager = VaccineManager()
+        date_signature = my_manager.cancel_appointment(cancellation_json)
+
+        with self.assertRaises(VaccineManagementException) as context_manager:
+            my_manager.vaccine_patient(date_signature)
+        self.assertEqual("The appointment is not active, it has been already cancelled.", context_manager.exception.message)

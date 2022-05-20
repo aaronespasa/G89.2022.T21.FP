@@ -5,7 +5,6 @@ from uc3m_care.data.vaccination_appointment import VaccinationAppointment
 from uc3m_care.exception.vaccine_management_exception import VaccineManagementException
 
 
-
 class VaccineManager:
     """Class for providing the methods for managing the vaccination process"""
 
@@ -42,6 +41,12 @@ class VaccineManager:
             """Register the vaccination of the patient"""
             appointment = VaccinationAppointment.get_appointment_from_date_signature(date_signature)
             return appointment.register_vaccination()
+
+        def cancel_appointment(self, input_file):
+            """Cancel the vaccination of the patient"""
+            # date_signature = VaccinationAppointment.create_cancellation_from_json_file(input_file)
+            # return date_signature
+            return None
 
     instance = None
 

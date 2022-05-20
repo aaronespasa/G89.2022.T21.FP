@@ -3,12 +3,14 @@ import unittest
 from pathlib import Path
 import json
 from freezegun import freeze_time
+from datetime import datetime
+from datetime import timedelta
 from uc3m_care import VaccineManager
 from uc3m_care import VaccineManagementException
 from uc3m_care import JSON_FILES_PATH, \
                       JSON_FILES_RF2_PATH, \
                       JSON_FILES_CANCELLATION_PATH
-from uc3m_care import CancellationJsonStore, PatientsJsonStore
+from uc3m_care import CancellationJsonStore, PatientsJsonStore, AppointmentsJsonStore
 
 DATE = "2022-03-08"
 
@@ -157,19 +159,25 @@ param_list_nok = [('Case_NV_02',
   'test_mod_node42.json',
   'The value of the JSON file is wrong.')]
 
-class TestJsons(unittest.TestCase):
-    """Test the JSONs from the cancellation of appointments tree"""
+# "The Cancellation couldn't been created. It already exists."
+# "The appointment with the given date_signature does not exist"
+# "The appointment is not active, it has been already cancelled."
+# "The appointment with the given date_signature is outdated"
+
+class TestCancellation(unittest.TestCase):
+    """Test the JSONs from the cancellation of appointments tree & the cancellation"""
 
     def setUp(self) -> None:
         """setUp IS EXECUTED ONCE BEFORE EACH TEST"""
         ...
 
     @freeze_time(DATE)
-    def test_Case_Valid(self):    # Existing file and correct content
+    def test_Json_Case_Valid(self):    # Existing file and correct content
         """
         This test checks if the valid json file is recognized with no error
         """
         PatientsJsonStore().empty_json_file()
+        AppointmentsJsonStore().empty_json_file()
         cancellation_json_storage = CancellationJsonStore()
         cancellation_json_storage.empty_json_file()
 
@@ -189,9 +197,10 @@ class TestJsons(unittest.TestCase):
         self.assertIsNotNone(cancellation_json_storage.find_item(date_signature))
 
     @freeze_time(DATE)
-    def test_Case_NV(self):
+    def test_parametrized_Json_Case_NV(self):
         """Invalid syntax, node 1 duplicated"""
         PatientsJsonStore().empty_json_file()
+        AppointmentsJsonStore().empty_json_file()
         cancellation_json_storage = CancellationJsonStore()
         cancellation_json_storage.empty_json_file()
 
@@ -210,3 +219,84 @@ class TestJsons(unittest.TestCase):
                     date_signature = my_manager.cancel_appointment(cancellation_json)
                 self.assertEqual(exception_name, context.exception.message)
                 self.assertIsNone(cancellation_json_storage.find_item(date_signature))
+
+    @freeze_time(DATE)
+    def test_not_valid_appointment_does_not_exist(self):
+        """Checks if an error is raised when a cancellation already exists"""
+        PatientsJsonStore().empty_json_file()
+        AppointmentsJsonStore().empty_json_file()
+        cancellation_json_storage = CancellationJsonStore()
+        cancellation_json_storage.empty_json_file()
+
+        # Generate a valid json file
+        my_manager = VaccineManager()
+        my_manager.request_vaccination_id(
+            "78924cb0-075a-4099-a3ee-f3b562e805b9", "minombre tienelalongitudmaxima", "Regular",
+            "+34123456789", "6")
+
+        with self.assertRaises(VaccineManagementException) as context:
+            cancellation_json = JSON_FILES_CANCELLATION_PATH + "test_right.json"
+            date_signature = my_manager.cancel_appointment(cancellation_json)
+        self.assertEqual(
+            "The appointment with the given date_signature does not exist",
+            context.exception.message
+        )
+        self.assertIsNone(cancellation_json_storage.find_item(date_signature))
+
+    @freeze_time(DATE)
+    def test_not_valid_appointment_is_outdated(self):
+        """Checks if an error is raised when a cancellation is outdated"""
+        PatientsJsonStore().empty_json_file()
+        AppointmentsJsonStore().empty_json_file()
+        cancellation_json_storage = CancellationJsonStore()
+        cancellation_json_storage.empty_json_file()
+
+        # Generate a valid json file
+        my_manager = VaccineManager()
+        my_manager.request_vaccination_id(
+            "78924cb0-075a-4099-a3ee-f3b562e805b9", "minombre tienelalongitudmaxima", "Regular",
+            "+34123456789", "6")
+        # create an appointment issued at date
+        my_manager.get_vaccine_date(JSON_FILES_RF2_PATH + "test_ok.json", DATE)
+
+        # freeze the time to DATE + 1 so the appointment expires
+        freezer = freeze_time(datetime.fromisoformat(DATE) + timedelta(days=1))
+
+        freezer.start()
+        with self.assertRaises(VaccineManagementException) as context:
+            cancellation_json = JSON_FILES_CANCELLATION_PATH + "test_right.json"
+            date_signature = my_manager.cancel_appointment(cancellation_json)
+        self.assertEqual(
+            "The appointment with the given date_signature is outdated",
+            context.exception.message
+        )
+        self.assertIsNone(cancellation_json_storage.find_item(date_signature))
+        freezer.stop()
+
+    @freeze_time(DATE)
+    def test_not_valid_appointment_already_cancelled(self):
+        """Checks if an error is raised when a cancellation is already cancelled"""
+        PatientsJsonStore().empty_json_file()
+        AppointmentsJsonStore().empty_json_file()
+        cancellation_json_storage = CancellationJsonStore()
+        cancellation_json_storage.empty_json_file()
+
+        cancellation_json = JSON_FILES_CANCELLATION_PATH + "test_right.json"
+
+        # Generate a valid json file
+        my_manager = VaccineManager()
+        my_manager.request_vaccination_id(
+            "78924cb0-075a-4099-a3ee-f3b562e805b9", "minombre tienelalongitudmaxima", "Regular",
+            "+34123456789", "6")
+        # create an appointment issued at date
+        my_manager.get_vaccine_date(JSON_FILES_RF2_PATH + "test_ok.json", DATE)
+
+        date_signature = my_manager.cancel_appointment(cancellation_json)
+
+        with self.assertRaises(VaccineManagementException) as context:
+            date_signature = my_manager.cancel_appointment(cancellation_json)
+        self.assertEqual(
+            "The appointment is not active, it has been already cancelled.",
+            context.exception.message
+        )
+        self.assertIsNone(cancellation_json_storage.find_item(date_signature))

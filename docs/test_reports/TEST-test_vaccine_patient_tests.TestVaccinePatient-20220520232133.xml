@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="test_vaccine_patient_tests.TestVaccinePatient-20220520232133" tests="7" file="test_vaccine_patient_tests.py" time="0.056" timestamp="2022-05-20T23:21:33" failures="0" errors="1" skipped="1">
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_vaccine_patient_bad_date_signature" time="0.008" timestamp="2022-05-20T23:21:33"/>
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_vaccine_patient_no_date" time="0.007" timestamp="2022-05-20T23:21:33"/>
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_vaccine_patient_not_found_date_signature" time="0.007" timestamp="2022-05-20T23:21:33"/>
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_vaccine_patient_ok" time="0.007" timestamp="2022-05-20T23:21:33"/>
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_vaccine_patient_store_date_is_empty" time="0.007" timestamp="2022-05-20T23:21:33"/>
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_not_valid_vaccine_patient_already_been_cancelled" time="0.020" timestamp="2022-05-20T23:21:33">
+		<error type="TypeError" message="expected string or bytes-like object"><![CDATA[Traceback (most recent call last):
+  File "/usr/local/Cellar/python@3.8/3.8.12_1/Frameworks/Python.framework/Versions/3.8/lib/python3.8/unittest/case.py", line 60, in testPartExecutor
+    yield
+  File "/usr/local/Cellar/python@3.8/3.8.12_1/Frameworks/Python.framework/Versions/3.8/lib/python3.8/unittest/case.py", line 676, in run
+    self._callTestMethod(testMethod)
+  File "/usr/local/Cellar/python@3.8/3.8.12_1/Frameworks/Python.framework/Versions/3.8/lib/python3.8/unittest/case.py", line 633, in _callTestMethod
+    method()
+  File "/Users/aaron/PycharmProjects/G89.2022.T21.FP/venv/lib/python3.8/site-packages/freezegun/api.py", line 789, in wrapper
+    result = func(*args, **kwargs)
+  File "/Users/aaron/PycharmProjects/G89.2022.T21.FP/src/unittest/python/test_vaccine_patient_tests.py", line 141, in test_not_valid_vaccine_patient_already_been_cancelled
+    my_manager.vaccine_patient(date_signature)
+  File "/Users/aaron/PycharmProjects/G89.2022.T21.FP/src/main/python/uc3m_care/vaccine_manager.py", line 42, in vaccine_patient
+    appointment = VaccinationAppointment.get_appointment_from_date_signature(date_signature)
+  File "/Users/aaron/PycharmProjects/G89.2022.T21.FP/src/main/python/uc3m_care/data/vaccination_appointment.py", line 103, in get_appointment_from_date_signature
+    appointment_record = appointments_store.find_item(DateSignature(date_signature).value)
+  File "/Users/aaron/PycharmProjects/G89.2022.T21.FP/src/main/python/uc3m_care/data/attribute/attribute.py", line 13, in __init__
+    self._value = self._validate(attr_value)
+  File "/Users/aaron/PycharmProjects/G89.2022.T21.FP/src/main/python/uc3m_care/data/attribute/attribute.py", line 26, in _validate
+    res = registration_type_pattern.fullmatch(attr_value)
+TypeError: expected string or bytes-like object
+]]></error>
+	</testcase>
+	<testcase classname="test_vaccine_patient_tests.TestVaccinePatient" name="test_vaccine_patient_no_store_date" time="0.000" timestamp="2022-05-20T23:21:33">
+		<skipped type="skip" message="This exception won't be raised after the refactoring process"/>
+	</testcase>
+</testsuite>
