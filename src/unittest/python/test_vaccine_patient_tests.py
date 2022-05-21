@@ -10,6 +10,7 @@ from uc3m_care import JSON_FILES_RF2_PATH, JSON_FILES_CANCELLATION_PATH
 from uc3m_care.storage.vaccination_json_store import VaccinationJsonStore
 from uc3m_care.storage.appointments_json_store import AppointmentsJsonStore
 from uc3m_care.storage.patients_json_store import PatientsJsonStore
+from uc3m_care import CancellationJsonStore
 
 DATE = "2022-03-08"
 
@@ -22,9 +23,11 @@ class TestVaccinePatient(TestCase):
 
         file_store_patient = PatientsJsonStore()
         file_store_date = AppointmentsJsonStore()
+        file_store_cancellation = CancellationJsonStore()
 
         file_store_date.delete_json_file()
         file_store_patient.delete_json_file()
+        file_store_cancellation.delete_json_file()
         file_test = JSON_FILES_RF2_PATH + "test_ok.json"
         # add patient and date in the store
         my_manager = VaccineManager()

@@ -30,6 +30,8 @@ class JsonParser:
             raise VaccineManagementException("File is not found") from ex
         except json.JSONDecodeError as ex:
             raise VaccineManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        if len(data) == 0:
+            raise VaccineManagementException("The JSON file is empty")
         self._json_content = data
 
     @property

@@ -2,6 +2,7 @@
 from datetime import datetime
 import hashlib
 from freezegun import freeze_time
+from uc3m_care.storage.cancellation_json_store import CancellationJsonStore
 from uc3m_care.data.attribute.attribute_phone_number import PhoneNumber
 from uc3m_care.data.attribute.attribute_patient_system_id import PatientSystemId
 from uc3m_care.data.attribute.attribute_date_signature import DateSignature
@@ -10,6 +11,7 @@ from uc3m_care.data.vaccine_patient_register import VaccinePatientRegister
 from uc3m_care.exception.vaccine_management_exception import VaccineManagementException
 from uc3m_care.storage.appointments_json_store import AppointmentsJsonStore
 from uc3m_care.parser.appointment_json_parser import AppointmentJsonParser
+from uc3m_care.parser.cancellation_json_parser import CancellationJsonParser
 from uc3m_care.data.attribute.attribute_vaccine_date import VaccineDate
 
 
@@ -92,6 +94,7 @@ class VaccinationAppointment:
         """saves the appointment in the appointments store"""
         appointments_store = AppointmentsJsonStore()
         appointments_store.add_item(self)
+        
 
     @classmethod
     def get_appointment_from_date_signature(cls, date_signature):
@@ -120,6 +123,31 @@ class VaccinationAppointment:
             date_appointment)
         return new_appointment
 
+    @staticmethod
+    def create_cancellation_from_json_file(json_file):
+        """Creates the Cancellation and returns its date_signature"""
+        # Add the cancellation to the Cancellation Store
+        cancellation_parser = CancellationJsonParser(json_file)
+        json_date_signature = cancellation_parser.json_content[cancellation_parser.DATE_SIGNATURE_KEY]
+
+        try:
+            appointment_to_be_cancelled = VaccinationAppointment.get_appointment_from_date_signature(
+                    json_date_signature
+            )
+        except VaccineManagementException as exception:
+            raise VaccineManagementException("The appointment with the given date_signature does not exist") from exception
+
+
+        # check if the date signature of the appointment is outdated
+        if appointment_to_be_cancelled.issued_at < datetime.timestamp(datetime.now()):
+            raise VaccineManagementException("The appointment with the given date_signature is outdated")
+
+        cancellations_store = CancellationJsonStore()
+        cancellations_store.add_item(cancellation_parser.json_content)
+
+        # return the data signature of the cancellation
+        return cancellation_parser.json_content[cancellation_parser.DATE_SIGNATURE_KEY]
+
     def is_valid_today(self):
         """returns true if today is the appointment's date"""
         today = datetime.today().date()
@@ -128,9 +156,17 @@ class VaccinationAppointment:
             raise VaccineManagementException("Today is not the date")
         return True
 
+    def is_active(self):
+        """Returns true if the appointment is not cancelled"""
+        cancellations_store = CancellationJsonStore()
+        cancellation_record = cancellations_store.find_item(self.date_signature)
+        if cancellation_record is not None:
+            raise VaccineManagementException("The appointment is not active, it has been already cancelled.")
+        return True
+
     def register_vaccination(self):
         """register the vaccine administration"""
-        if self.is_valid_today():
+        if self.is_valid_today() and self.is_active():
             vaccination_log_entry = VaccinationLog(self.date_signature)
             vaccination_log_entry.save_log_entry()
         return True

@@ -32,7 +32,7 @@ param_list_nok = [("test_dup_all.json", "JSON Decode Error - Wrong JSON Format")
                   ("test_dup_label2.json", "JSON Decode Error - Wrong JSON Format"),
                   ("test_dup_label2_content.json", "Bad label contact phone"),
                   ("test_dup_phone.json", "phone number is not valid"),
-                  ("test_empty.json", "Bad label patient_id"),
+                  ("test_empty.json", "The JSON file is empty"),
                   ("test_mod_char_plus.json", "phone number is not valid"),
                   ("test_mod_data1.json", "patient system id is not valid"),
                   ("test_mod_data2.json", "phone number is not valid"),

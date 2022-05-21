@@ -11,15 +11,18 @@ class CancellationJsonStore():
         """Subclass of JsonStore for managing the VaccinationLog"""
         _FILE_PATH = JSON_FILES_PATH + "store_cancellations.json"
         _ID_FIELD = "date_signature"
-        ERROR_INVALID_CANCELLATION_OBJECT = "Invalid cancellation object"
+        ERROR_INVALID_CANCELLATION_OBJECT = "The Cancellation couldn't been created. It already exists."
 
-        # def add_item(self, item):
-        #     """Overrides the add_item method to verify the item to be stored"""
-        #     # pylint: disable=import-outside-toplevel, cyclic-import
-        #     from uc3m_care.data.vaccination_appointment import VaccinationAppointment
-        #     if not isinstance(item, VaccinationAppointment):
-        #         raise VaccineManagementException(self.ERROR_INVALID_CANCELLATION_OBJECT)
-        #     super().add_item(item)
+        def add_item(self, item):
+            """Adds a new item received as a dictionary"""
+            existing_item = self.find_item(item[self._ID_FIELD])
+
+            if existing_item is None:
+                self.load()
+                self._data_list.append(item)
+                self.save()
+            else:
+                raise VaccineManagementException(self.ERROR_INVALID_CANCELLATION_OBJECT)
 
     instance = None
 
