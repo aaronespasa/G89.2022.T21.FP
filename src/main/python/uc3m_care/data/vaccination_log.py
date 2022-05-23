@@ -23,5 +23,5 @@ class VaccinationLog:
 
     @property
     def vaccination_date(self):
-        """returns the timestamp corresponding to the date of administration """
+        """returns the timestamp corresponding to the date of administration"""
         return self.__timestamp

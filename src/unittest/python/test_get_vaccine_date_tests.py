@@ -13,37 +13,38 @@ from uc3m_care import PatientsJsonStore
 
 DATE = "2022-03-08"
 
-param_list_nok = [("test_dup_all.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_char_plus.json", "phone number is not valid"),
-                  ("test_dup_colon.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_comillas.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_comma.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_content.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_data1.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_data1_content.json", "patient system id is not valid"),
-                  ("test_dup_data2.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_data2_content.json", "phone number is not valid"),
-                  ("test_dup_field1.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_field2.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_final_bracket.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_initial_bracket.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_label1.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_label1_content.json", "Bad label patient_id"),
-                  ("test_dup_label2.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_dup_label2_content.json", "Bad label contact phone"),
-                  ("test_dup_phone.json", "phone number is not valid"),
-                  ("test_empty.json", "The JSON file is empty"),
-                  ("test_mod_char_plus.json", "phone number is not valid"),
-                  ("test_mod_data1.json", "patient system id is not valid"),
-                  ("test_mod_data2.json", "phone number is not valid"),
-                  ("test_mod_label1.json", "Bad label patient_id"),
-                  ("test_mod_label2.json", "Bad label contact phone"),
-                  ("test_mod_phone.json", "phone number is not valid"),
-                  ("test_no_char_plus.json", "phone number is not valid"),
-                  ("test_no_colon.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_no_comillas.json", "JSON Decode Error - Wrong JSON Format"),
-                  ("test_no_phone.json", "phone number is not valid")
-                  ]
+param_list_nok = [
+    ("test_dup_all.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_char_plus.json", "phone number is not valid"),
+    ("test_dup_colon.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_comillas.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_comma.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_content.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_data1.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_data1_content.json", "patient system id is not valid"),
+    ("test_dup_data2.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_data2_content.json", "phone number is not valid"),
+    ("test_dup_field1.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_field2.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_final_bracket.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_initial_bracket.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_label1.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_label1_content.json", "Bad label patient_id"),
+    ("test_dup_label2.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_dup_label2_content.json", "Bad label contact phone"),
+    ("test_dup_phone.json", "phone number is not valid"),
+    ("test_empty.json", "The JSON file is empty"),
+    ("test_mod_char_plus.json", "phone number is not valid"),
+    ("test_mod_data1.json", "patient system id is not valid"),
+    ("test_mod_data2.json", "phone number is not valid"),
+    ("test_mod_label1.json", "Bad label patient_id"),
+    ("test_mod_label2.json", "Bad label contact phone"),
+    ("test_mod_phone.json", "phone number is not valid"),
+    ("test_no_char_plus.json", "phone number is not valid"),
+    ("test_no_colon.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_no_comillas.json", "JSON Decode Error - Wrong JSON Format"),
+    ("test_no_phone.json", "phone number is not valid"),
+]
 
 
 class TestGetVaccineDate(TestCase):
@@ -62,12 +63,18 @@ class TestGetVaccineDate(TestCase):
         file_store_date.delete_json_file()
 
         # add a patient in the store
-        my_manager.request_vaccination_id("78924cb0-075a-4099-a3ee-f3b562e805b9",
-                                          "minombre tienelalongitudmaxima",
-                                          "Regular", "+34123456789", "6")
+        my_manager.request_vaccination_id(
+            "78924cb0-075a-4099-a3ee-f3b562e805b9",
+            "minombre tienelalongitudmaxima",
+            "Regular",
+            "+34123456789",
+            "6",
+        )
         # check the method
         value = my_manager.get_vaccine_date(file_test, DATE)
-        self.assertEqual("ced0953d112ab693b83d1ced965fcc670b558235361b9d1bd62536769a1efa3b", value)
+        self.assertEqual(
+            "ced0953d112ab693b83d1ced965fcc670b558235361b9d1bd62536769a1efa3b", value
+        )
         # check store_date
         self.assertIsNotNone(file_store_date.find_item(value))
 
@@ -81,9 +88,13 @@ class TestGetVaccineDate(TestCase):
         file_store_date = AppointmentsJsonStore()
         file_store_date.delete_json_file()
         # add a patient in the store
-        my_manager.request_vaccination_id("78924cb0-075a-4099-a3ee-f3b562e805b9",
-                                          "minombre tienelalongitudmaxima",
-                                          "Regular", "+34123456789", "6")
+        my_manager.request_vaccination_id(
+            "78924cb0-075a-4099-a3ee-f3b562e805b9",
+            "minombre tienelalongitudmaxima",
+            "Regular",
+            "+34123456789",
+            "6",
+        )
         for file_name, expected_value in param_list_nok:
             with self.subTest(test=file_name):
                 file_test = JSON_FILES_RF2_PATH + file_name
@@ -121,7 +132,7 @@ class TestGetVaccineDate(TestCase):
 
     @freeze_time(DATE)
     def test_get_vaccine_date_no_ok_no_quotes(self):
-        """ no quotes , not valid """
+        """no quotes , not valid"""
         file_test = JSON_FILES_RF2_PATH + "test_nok_no_comillas.json"
         my_manager = VaccineManager()
         file_store_date = AppointmentsJsonStore()
@@ -141,7 +152,7 @@ class TestGetVaccineDate(TestCase):
 
     @freeze_time(DATE)
     def test_get_vaccine_date_no_ok_data_manipulated(self):
-        """ no quotes , not valid """
+        """no quotes , not valid"""
         file_test = JSON_FILES_RF2_PATH + "test_ok.json"
         my_manager = VaccineManager()
         file_store = JSON_FILES_PATH + "store_patient.json"
@@ -150,8 +161,10 @@ class TestGetVaccineDate(TestCase):
         if os.path.isfile(JSON_FILES_PATH + "swap.json"):
             os.remove(JSON_FILES_PATH + "swap.json")
         if not os.path.isfile(JSON_FILES_PATH + "store_patient_manipulated.json"):
-            shutil.copy(JSON_FILES_RF2_PATH + "store_patient_manipulated.json",
-                        JSON_FILES_PATH + "store_patient_manipulated.json")
+            shutil.copy(
+                JSON_FILES_RF2_PATH + "store_patient_manipulated.json",
+                JSON_FILES_PATH + "store_patient_manipulated.json",
+            )
 
         # rename the manipulated patient's store
         if os.path.isfile(file_store):
@@ -231,7 +244,7 @@ class TestGetVaccineDate(TestCase):
         hash_new = file_store_date.data_hash()
 
         self.assertEqual(hash_new, hash_original)
-    
+
     @freeze_time(DATE)
     def test_get_vaccine_date_no_ok_invalid_format_one_char_more(self):
         """Test the get vaccine date method with an invalid format"""

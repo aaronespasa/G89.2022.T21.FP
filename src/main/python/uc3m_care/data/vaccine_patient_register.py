@@ -11,6 +11,7 @@ from uc3m_care.data.attribute.attribute_patient_id import PatientId
 from uc3m_care.data.attribute.attribute_phone_number import PhoneNumber
 from uc3m_care.data.attribute.attribute_full_name import FullName
 from uc3m_care.data.attribute.attribute_age import Age
+
 # pylint: disable: cyclic-import
 from uc3m_care.storage.patients_json_store import PatientsJsonStore
 
@@ -41,13 +42,18 @@ class VaccinePatientRegister:
 
         # set the date when the patient was registered for checking the md5
         freezer = freeze_time(
-            datetime.fromtimestamp(patient_found["_VaccinePatientRegister__time_stamp"]).date())
+            datetime.fromtimestamp(
+                patient_found["_VaccinePatientRegister__time_stamp"]
+            ).date()
+        )
         freezer.start()
-        patient = cls(patient_found["_VaccinePatientRegister__patient_id"],
-                      patient_found["_VaccinePatientRegister__full_name"],
-                      patient_found["_VaccinePatientRegister__registration_type"],
-                      patient_found["_VaccinePatientRegister__phone_number"],
-                      patient_found["_VaccinePatientRegister__age"])
+        patient = cls(
+            patient_found["_VaccinePatientRegister__patient_id"],
+            patient_found["_VaccinePatientRegister__full_name"],
+            patient_found["_VaccinePatientRegister__registration_type"],
+            patient_found["_VaccinePatientRegister__phone_number"],
+            patient_found["_VaccinePatientRegister__age"],
+        )
         freezer.stop()
         if patient.patient_system_id != patient_system_id:
             raise VaccineManagementException("Patient's data have been manipulated")

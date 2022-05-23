@@ -55,5 +55,5 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(id(vm1), id(vm4))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

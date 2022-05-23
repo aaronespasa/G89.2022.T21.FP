@@ -6,8 +6,9 @@ import os
 from uc3m_care.exception.vaccine_management_exception import VaccineManagementException
 
 
-class JsonStore():
+class JsonStore:
     """Superclass for managing storage in JSON files"""
+
     _FILE_PATH = ""
     _ID_FIELD = ""
     _data_list = []
@@ -24,8 +25,9 @@ class JsonStore():
             # file is not found , so  init my data_list
             self._data_list = []
         except json.JSONDecodeError as exception_raised:
-            raise VaccineManagementException("JSON Decode Error - Wrong JSON Format") \
-                from exception_raised
+            raise VaccineManagementException(
+                "JSON Decode Error - Wrong JSON Format"
+            ) from exception_raised
 
     def save(self):
         """Saves the datalist in the JSON file"""

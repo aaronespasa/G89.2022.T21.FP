@@ -14,6 +14,7 @@ from uc3m_care import CancellationJsonStore
 
 DATE = "2022-03-08"
 
+
 class TestVaccinePatient(TestCase):
     """Class for testing vaccine patient"""
 
@@ -31,14 +32,22 @@ class TestVaccinePatient(TestCase):
         file_test = JSON_FILES_RF2_PATH + "test_ok.json"
         # add patient and date in the store
         my_manager = VaccineManager()
-        my_manager.request_vaccination_id("78924cb0-075a-4099-a3ee-f3b562e805b9",
-                                          "minombre tienelalongitudmaxima", "Regular",
-                                          "+34123456789", "6")
+        my_manager.request_vaccination_id(
+            "78924cb0-075a-4099-a3ee-f3b562e805b9",
+            "minombre tienelalongitudmaxima",
+            "Regular",
+            "+34123456789",
+            "6",
+        )
         my_manager.get_vaccine_date(file_test, DATE)
 
-        my_manager.request_vaccination_id("57c811e5-3f5a-4a89-bbb8-11c0464d53e6",
-                                          "minombre tieneuncharmenosqmax", "Family",
-                                          "+34333456789", "7")
+        my_manager.request_vaccination_id(
+            "57c811e5-3f5a-4a89-bbb8-11c0464d53e6",
+            "minombre tieneuncharmenosqmax",
+            "Family",
+            "+34333456789",
+            "7",
+        )
         file_test = JSON_FILES_RF2_PATH + "test_ok_2.json"
 
         my_manager.get_vaccine_date(file_test, DATE)
@@ -47,12 +56,14 @@ class TestVaccinePatient(TestCase):
     def test_vaccine_patient_ok(self):
         """basic path , signature is found , and date = today"""
         my_manager = VaccineManager()
-        value = my_manager.vaccine_patient \
-            ("ced0953d112ab693b83d1ced965fcc670b558235361b9d1bd62536769a1efa3b")
+        value = my_manager.vaccine_patient(
+            "ced0953d112ab693b83d1ced965fcc670b558235361b9d1bd62536769a1efa3b"
+        )
         self.assertTrue(value)
         vaccination_log = VaccinationJsonStore()
-        vaccination_entry = vaccination_log.find_item \
-            ("ced0953d112ab693b83d1ced965fcc670b558235361b9d1bd62536769a1efa3b")
+        vaccination_entry = vaccination_log.find_item(
+            "ced0953d112ab693b83d1ced965fcc670b558235361b9d1bd62536769a1efa3b"
+        )
         self.assertIsNotNone(vaccination_entry)
 
     @freeze_time(datetime.isoformat(datetime.fromisoformat(DATE) - timedelta(days=1)))
@@ -67,7 +78,8 @@ class TestVaccinePatient(TestCase):
 
         with self.assertRaises(VaccineManagementException) as context_manager:
             my_manager.vaccine_patient(
-                "ced0953d112ab693b83d1ced965fcc670b558235361b9d1bd62536769a1efa3b")
+                "ced0953d112ab693b83d1ced965fcc670b558235361b9d1bd62536769a1efa3b"
+            )
         self.assertEqual(context_manager.exception.message, "Today is not the date")
         # read the file again to compare
         hash_new = file_store_vaccine.data_hash()
@@ -83,8 +95,11 @@ class TestVaccinePatient(TestCase):
         hash_original = file_store_vaccine.data_hash()
         with self.assertRaises(VaccineManagementException) as context_manager:
             my_manager.vaccine_patient(
-                "a06c7bede3d584e934e2f5bd3861e625cb31937f9f1a5362a51fbbf38486f1c")
-        self.assertEqual(context_manager.exception.message, "date_signature format is not valid")
+                "a06c7bede3d584e934e2f5bd3861e625cb31937f9f1a5362a51fbbf38486f1c"
+            )
+        self.assertEqual(
+            context_manager.exception.message, "date_signature format is not valid"
+        )
         hash_new = file_store_vaccine.data_hash()
 
         self.assertEqual(hash_new, hash_original)
@@ -99,8 +114,11 @@ class TestVaccinePatient(TestCase):
 
         with self.assertRaises(VaccineManagementException) as context_manager:
             my_manager.vaccine_patient(
-                "7a8403d8605804cf2534fd7885940f3c3d8ec60ba578bc158b5dc2b9fb68d524")
-        self.assertEqual(context_manager.exception.message, "date_signature is not found")
+                "7a8403d8605804cf2534fd7885940f3c3d8ec60ba578bc158b5dc2b9fb68d524"
+            )
+        self.assertEqual(
+            context_manager.exception.message, "date_signature is not found"
+        )
         # read the file again to compare
         hash_new = file_store_vaccine.data_hash()
         self.assertEqual(hash_new, hash_original)
@@ -114,7 +132,8 @@ class TestVaccinePatient(TestCase):
         my_manager = VaccineManager()
         with self.assertRaises(VaccineManagementException) as context_manager:
             my_manager.vaccine_patient(
-                "5a06c7bede3d584e934e2f5bd3861e625cb31937f9f1a5362a51fbbf38486f1c")
+                "5a06c7bede3d584e934e2f5bd3861e625cb31937f9f1a5362a51fbbf38486f1c"
+            )
         self.assertEqual(context_manager.exception.message, "Store_date not found")
 
     @freeze_time(DATE)
@@ -126,15 +145,18 @@ class TestVaccinePatient(TestCase):
         my_manager = VaccineManager()
         with self.assertRaises(VaccineManagementException) as context_manager:
             my_manager.vaccine_patient(
-                "ced0953d112ab693b83d1ced965fcc670b558235361b9d1bd62536769a1efa3b")
-        self.assertEqual(context_manager.exception.message, "date_signature is not found")
+                "ced0953d112ab693b83d1ced965fcc670b558235361b9d1bd62536769a1efa3b"
+            )
+        self.assertEqual(
+            context_manager.exception.message, "date_signature is not found"
+        )
 
     @freeze_time(DATE)
     def test_not_valid_vaccine_patient_already_been_cancelled(self):
         """The appointment is not active, it has been already cancelled."""
         file_store_vaccine = VaccinationJsonStore()
         file_store_vaccine.delete_json_file()
-        
+
         cancellation_json = JSON_FILES_CANCELLATION_PATH + "test_right.json"
 
         my_manager = VaccineManager()
@@ -142,4 +164,7 @@ class TestVaccinePatient(TestCase):
 
         with self.assertRaises(VaccineManagementException) as context_manager:
             my_manager.vaccine_patient(date_signature)
-        self.assertEqual("The appointment is not active, it has been already cancelled.", context_manager.exception.message)
+        self.assertEqual(
+            "The appointment is not active, it has been already cancelled.",
+            context_manager.exception.message,
+        )

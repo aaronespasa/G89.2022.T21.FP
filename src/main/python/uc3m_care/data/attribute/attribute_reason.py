@@ -6,6 +6,7 @@ from uc3m_care.exception.vaccine_management_exception import VaccineManagementEx
 # pylint: disable=too-few-public-methods
 class Reason(Attribute):
     """Classs for the attribute Reason"""
+
     _validation_error_message = "reason format is not valid"
 
     def _validate(self, attr_value: str) -> str:

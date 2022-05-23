@@ -8,6 +8,7 @@ from uc3m_care.exception.vaccine_management_exception import VaccineManagementEx
 
 class CancellationJsonParser(JsonParser):
     """Subclass of JsonParer for parsing inputs of get_vaccine_date"""
+
     BAD_REASON_LABEL_ERROR = "The key of the JSON file is wrong."
     BAD_REASON_VALUE_ERROR = "The value of the JSON file is wrong."
     BAD_CANCELLATION_TYPE_LABEL_ERROR = "The key of the JSON file is wrong."
@@ -18,16 +19,12 @@ class CancellationJsonParser(JsonParser):
     CANCELLATION_TYPE_KEY = "cancellation_type"
     REASON_KEY = "reason"
 
-    _JSON_KEYS = [
-        DATE_SIGNATURE_KEY,
-        CANCELLATION_TYPE_KEY,
-        REASON_KEY
-    ]
+    _JSON_KEYS = [DATE_SIGNATURE_KEY, CANCELLATION_TYPE_KEY, REASON_KEY]
 
     _ERROR_MESSAGES = [
         BAD_DATE_SIGNATURE_LABEL_ERROR,
         BAD_CANCELLATION_TYPE_LABEL_ERROR,
-        BAD_REASON_LABEL_ERROR
+        BAD_REASON_LABEL_ERROR,
     ]
 
     def __init__(self, input_file):
@@ -36,7 +33,6 @@ class CancellationJsonParser(JsonParser):
         self.validate_cancellation_type()
         self.validate_reason()
 
-
     def validate_date_signature(self):
         """validate that the key date_signature from the JSON is correct"""
         date_signature = self._json_content[self.DATE_SIGNATURE_KEY]
@@ -44,7 +40,9 @@ class CancellationJsonParser(JsonParser):
         try:
             DateSignature(date_signature)
         except Exception as exception:
-            raise VaccineManagementException(self.BAD_DATE_SIGNATURE_VALUE_ERROR) from exception
+            raise VaccineManagementException(
+                self.BAD_DATE_SIGNATURE_VALUE_ERROR
+            ) from exception
 
     def validate_cancellation_type(self):
         """validate that the key cancellation_type from the JSON is correct"""
@@ -53,7 +51,9 @@ class CancellationJsonParser(JsonParser):
         try:
             CancellationType(cancellation_type)
         except Exception as exception:
-            raise VaccineManagementException(self.BAD_CANCELLATION_TYPE_VALUE_ERROR) from exception
+            raise VaccineManagementException(
+                self.BAD_CANCELLATION_TYPE_VALUE_ERROR
+            ) from exception
 
     def validate_reason(self):
         """validate that the key reason from the JSON is correct"""

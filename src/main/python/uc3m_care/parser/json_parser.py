@@ -5,6 +5,7 @@ from uc3m_care.exception.vaccine_management_exception import VaccineManagementEx
 
 class JsonParser:
     """Subclass of JsonStore for managing the Appointments"""
+
     _JSON_KEYS = []
     _ERROR_MESSAGES = []
     _json_content = None
@@ -29,7 +30,9 @@ class JsonParser:
             # file is not found
             raise VaccineManagementException("File is not found") from ex
         except json.JSONDecodeError as ex:
-            raise VaccineManagementException("JSON Decode Error - Wrong JSON Format") from ex
+            raise VaccineManagementException(
+                "JSON Decode Error - Wrong JSON Format"
+            ) from ex
         if len(data) == 0:
             raise VaccineManagementException("The JSON file is empty")
         self._json_content = data

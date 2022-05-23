@@ -11,8 +11,8 @@ use_plugin("python.pycharm")
 name = "GE3_2022"
 default_task = "publish"
 
-description ="",
-long_description = "",
+description = ("",)
+long_description = ("",)
 long_description_content_type = "text/markdown"
 
 
